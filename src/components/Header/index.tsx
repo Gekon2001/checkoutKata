@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { HeaderContainer } from "./styles";
+import Loader from "../Loader";
 
 const Header = () => {
  return (
@@ -20,6 +21,7 @@ const Header = () => {
    >
     Admin
    </NavLink>
+   <Loader />
   </HeaderContainer>
  );
 };

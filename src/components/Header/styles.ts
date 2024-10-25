@@ -4,6 +4,7 @@ export const HeaderContainer = styled.div`
  display: flex;
  justify-content: space-evenly;
  width: 100vw;
+ margin: 20px 0;
 `;
 
 export const Button = styled.a`
