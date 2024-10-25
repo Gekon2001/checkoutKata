@@ -4,8 +4,10 @@ import { deleteAdminDataItem } from "../../../../store/admin/thunks";
 
 import EditAdminItem from "../EditAdminItem";
 import { AdminDataItemProps } from "./types";
+import { useAppDispatch } from "../../../../store/hooks";
 
 const AdminDataItem = ({ item }: AdminDataItemProps) => {
+ const dispatch = useAppDispatch();
  const [editState, setEditState] = useState(false);
 
  const handleCancelEdit = useCallback(() => {
@@ -17,11 +19,11 @@ const AdminDataItem = ({ item }: AdminDataItemProps) => {
  }, []);
 
  const handleDeleteItem = useCallback(() => {
-  deleteAdminDataItem(item.id);
- }, [item.id]);
+  dispatch(deleteAdminDataItem(item.id));
+ }, [dispatch, item.id]);
 
  return editState ? (
-  <EditAdminItem item={item} handleDeleteItem={handleCancelEdit} />
+  <EditAdminItem item={item} handleCancel={handleCancelEdit} />
  ) : (
   <TableRow>
    <TableCell>

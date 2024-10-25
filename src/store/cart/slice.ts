@@ -1,24 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface CounterState {
- data: number | null;
+interface ICartItem {
+ id: string;
+ name: string;
+ quantity: number;
+}
+interface CartState {
+ data: ICartItem[];
 }
 
-const initialState: CounterState = {
- data: null,
+const initialState: CartState = {
+ data: [],
 };
 
 export const cartReducer = createSlice({
  name: "cart",
  initialState,
  reducers: {
-  setData: (state, action: PayloadAction<number>) => {
-   state.data = action.payload;
+  addCartItems: (state, action: PayloadAction<ICartItem>) => {
+   const index = state.data.findIndex(({ id }) => id === action.payload.id);
+   if (index + 1) {
+    state.data[index].quantity =
+     state.data[index].quantity + action.payload.quantity;
+   } else {
+    state.data.push(action.payload);
+   }
+  },
+  resetCart: (state) => {
+   state.data = [];
   },
  },
 });
 
-export const { setData } = cartReducer.actions;
+export const { addCartItems, resetCart } = cartReducer.actions;
 
 export default cartReducer.reducer;

@@ -9,11 +9,7 @@ import { EditAdminItemProps } from "./types";
 import { adminDataItemValidate, formatSpecialPriceToObject } from "./utils";
 import { Input } from "./styles";
 
-const EditAdminItem = ({
- item,
- handleSaveItem,
- handleDeleteItem,
-}: EditAdminItemProps) => {
+const EditAdminItem = ({ item, handleCancel }: EditAdminItemProps) => {
  const dispatch = useAppDispatch();
  const formik = useFormik({
   initialValues: {
@@ -31,7 +27,6 @@ const EditAdminItem = ({
  const isErrors = Object.values(formik.errors).some((error) => error);
  const saveItem = async () => {
   if (isErrors) {
-   console.log("return");
    return;
   }
   const { name, price, specialPrice } = formik.values;
@@ -46,9 +41,7 @@ const EditAdminItem = ({
     },
    })
   );
-  if (handleSaveItem) {
-   handleSaveItem();
-  }
+  handleCancel();
  };
 
  return (
@@ -87,7 +80,7 @@ const EditAdminItem = ({
     <Button disabled={isErrors} onClick={saveItem}>
      Save
     </Button>
-    <Button onClick={handleDeleteItem}>Cancel</Button>
+    <Button onClick={handleCancel}>Cancel</Button>
    </TableCell>
   </TableRow>
  );

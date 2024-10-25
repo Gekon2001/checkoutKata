@@ -58,13 +58,7 @@ const Admin = () => {
       {adminData.map((dataItem) => (
        <AdminDataItem key={dataItem.id} item={dataItem} />
       ))}
-      {newItem && (
-       <EditAdminItem
-        item={newItem}
-        handleDeleteItem={clearNewItem}
-        handleSaveItem={clearNewItem}
-       />
-      )}
+      {newItem && <EditAdminItem item={newItem} handleCancel={clearNewItem} />}
       <TableRow>
        <TableCell $button colSpan={4}>
         <Button onClick={handleCreateNewItem} $fullSize>
