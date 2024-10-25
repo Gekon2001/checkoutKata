@@ -13,7 +13,29 @@ const FETCH_ADMIN_DATA = "FETCH_ADMIN_DATA";
 const UPDATE_ADMIN_DATA_ITEM = "UPDATE_ADMIN_DATA_ITEM";
 const DELETE_ADMIN_DATA_ITEM = "DELETE_ADMIN_DATA_ITEM";
 
-const fetchedData: IAdminDataItem[] = [];
+const fetchedData: IAdminDataItem[] = [
+ {
+  name: "Item 1",
+  price: 100,
+  specialPrice: { data: { "3": 270, "5": 430 }, name: "3 for 270, 5 for 430" },
+  id: "887f1b14-8019-4ee4-86de-630f36d021b7",
+ },
+ {
+  name: "Item 2",
+  price: 50,
+  specialPrice: { data: null, name: "" },
+  id: "700ef8d5-dce3-4a5a-9577-c2dbf5c21997",
+ },
+ {
+  name: "item 3",
+  price: 1000,
+  specialPrice: {
+   data: { "2": 1900, "3": 2800 },
+   name: "2 for 1900, 3for2800",
+  },
+  id: "f56c34ac-d88a-42d5-9b06-9d6b7cdfe8e3",
+ },
+];
 
 export const fetchAdminData = createAsyncThunk<
  void,

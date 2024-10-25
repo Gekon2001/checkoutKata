@@ -3,10 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Header } from "../../components";
 
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { getAdminData } from "../../store/admin/selectors";
-// import { setAdminData } from "../../store/admin/slice";
-// import { fetchAdminData } from "../../store/admin/thunks";
+import { fetchAdminData } from "../../store/admin/thunks";
 
 import {
  AdminContainer,
@@ -22,7 +21,12 @@ import { AdminDataItem, EditAdminItem } from "./components";
 const Admin = () => {
  const [newItem, setNewItem] = useState<IAdminDataItem | null>(null);
  const adminData = useAppSelector(getAdminData);
- //  const dispatch = useAppDispatch();
+
+ const dispatch = useAppDispatch();
+
+ const handleFetchMockData = useCallback(() => {
+  dispatch(fetchAdminData());
+ }, [dispatch]);
 
  const handleCreateNewItem = useCallback(() => {
   setNewItem({
@@ -60,19 +64,31 @@ const Admin = () => {
       ))}
       {newItem && <EditAdminItem item={newItem} handleCancel={clearNewItem} />}
       <TableRow>
+       <TableCell colSpan={4} $small />
+      </TableRow>
+      <TableRow>
        <TableCell $button colSpan={4}>
         <Button onClick={handleCreateNewItem} $fullSize>
          +
         </Button>
        </TableCell>
       </TableRow>
+      <TableRow>
+       <TableCell colSpan={4} $small />
+      </TableRow>
+      <TableRow>
+       <TableCell $button colSpan={4}>
+        <Button onClick={handleFetchMockData} $fullSize>
+         Fetch Mock Data
+        </Button>
+       </TableCell>
+      </TableRow>
+      <TableRow>
+       <TableCell colSpan={4} $small />
+      </TableRow>
      </tbody>
     </Table>
    </AdminContainer>
-   {/* <div onClick={() => dispatch(setAdminData(data ? data + 1 : 1))}>+</div>
-   <div onClick={() => dispatch(fetchAdminData(data ? data - 1 : -1))}> */}
-   {/* async -
-   </div> */}
   </>
  );
 };

@@ -23,12 +23,14 @@ export const TableHeader = styled.th`
 export const TableCell = styled.td<{
  $button?: boolean;
  fullWidth?: boolean;
+ $small?: boolean;
 }>`
  border: 1px solid #ddd;
- ${({ $button }) => ($button ? "padding: 0;" : "")};
+ ${({ $button }) => $button && "padding: 0;"};
  text-align: left;
  height: 40px;
  border: none;
+ ${({ $small }) => $small && "height: 10px;"}
  &:first-child {
   width: 30vw;
  }

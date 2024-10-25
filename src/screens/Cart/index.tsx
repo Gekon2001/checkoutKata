@@ -5,6 +5,8 @@ import { getAdminData } from "../../store/admin/selectors";
 import { getCartData } from "../../store/cart/selectors";
 import { addCartItems, resetCart } from "../../store/cart/slice";
 
+const initialSumData = { savings: 0, quantity: 0, sum: 0, finalSum: 0 };
+
 import {
  AdminContainer,
  Button,
@@ -41,18 +43,19 @@ const Cart = () => {
 
  const mergedData = useMemo(
   // every time we get data from a server with new prices and rules we recount cart
-  () =>
-   cartData
+  () => {
+   const sumData = { ...initialSumData };
+   const items = cartData
     .map((cartItem) => {
      const adminDataItem = adminData.find(({ id }) => id === cartItem.id);
      if (!adminDataItem) return null;
 
      const sum = cartItem.quantity * adminDataItem.price;
      let quantity = cartItem.quantity;
-     let specialSum = null;
+     let finalSum = null;
 
      if (adminDataItem.specialPrice.data) {
-      specialSum = Object.keys(adminDataItem.specialPrice.data).reduceRight(
+      finalSum = Object.keys(adminDataItem.specialPrice.data).reduceRight(
        (acc, cur, index) => {
         // as reduceRight - last item will be with index 0
         const isLastItem = !index;
@@ -75,20 +78,32 @@ const Cart = () => {
        0
       );
      }
-
-     if (specialSum === sum) {
-      specialSum = null;
+     if (!finalSum) {
+      finalSum = sum;
      }
+     let savings;
+     if (finalSum) {
+      savings = sum - finalSum;
+      sumData.savings += savings;
+     } else {
+      savings = "-";
+     }
+
+     sumData.quantity += cartItem.quantity;
+     sumData.sum += sum;
+     sumData.finalSum += finalSum;
 
      return {
       ...cartItem,
       ...adminDataItem,
       sum,
-      specialSum,
-      savings: specialSum ? sum - specialSum : "-",
+      finalSum,
+      savings,
      };
     })
-    .filter((v) => v !== null),
+    .filter((v) => v !== null);
+   return { sumData, items };
+  },
   [adminData, cartData]
  );
 
@@ -97,8 +112,12 @@ const Cart = () => {
    <Header />
    <AdminContainer>
     <ButtonContainer>
-     <Button onClick={handleScan}>Scan</Button>
-     <Button onClick={handleScanX10}>Scan 10</Button>
+     <Button disabled={!adminData.length} onClick={handleScan}>
+      Scan
+     </Button>
+     <Button disabled={!adminData.length} onClick={handleScanX10}>
+      Scan 10
+     </Button>
      <Button onClick={handleReset}>Reset Cart</Button>
     </ButtonContainer>
 
@@ -111,12 +130,12 @@ const Cart = () => {
        <TableHeader>Unit Price</TableHeader>
        <TableHeader>Sum</TableHeader>
        <TableHeader>Special Price</TableHeader>
-       <TableHeader>Special Sum</TableHeader>
+       <TableHeader>Final Sum</TableHeader>
        <TableHeader>Savings</TableHeader>
       </TableRow>
      </thead>
      <tbody>
-      {mergedData?.map((cartItem, number) => (
+      {mergedData.items?.map((cartItem, number) => (
        <TableRow key={cartItem.id}>
         <TableCell>{number + 1}</TableCell>
         <TableCell>{cartItem.name}</TableCell>
@@ -124,11 +143,22 @@ const Cart = () => {
         <TableCell>{cartItem.price}</TableCell>
         <TableCell>{cartItem.sum}</TableCell>
         <TableCell>{cartItem.specialPrice.name || "-"}</TableCell>
-        <TableCell>{cartItem.specialSum || "-"}</TableCell>
+        <TableCell>{cartItem.finalSum}</TableCell>
         <TableCell>{cartItem.savings}</TableCell>
        </TableRow>
       ))}
      </tbody>
+     <tfoot>
+      <TableRow $bold>
+       <TableCell colSpan={2}>Sum</TableCell>
+       <TableCell>{mergedData.sumData.quantity}</TableCell>
+       <TableCell>-</TableCell>
+       <TableCell>{mergedData.sumData.sum}</TableCell>
+       <TableCell>-</TableCell>
+       <TableCell>{mergedData.sumData.finalSum}</TableCell>
+       <TableCell>{mergedData.sumData.savings}</TableCell>
+      </TableRow>
+     </tfoot>
     </Table>
    </AdminContainer>
   </>

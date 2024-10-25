@@ -30,10 +30,11 @@ export const Table = styled.table`
  border-collapse: collapse;
 `;
 
-export const TableRow = styled.tr`
+export const TableRow = styled.tr<{ $bold?: boolean }>`
  &:nth-child(even) {
   background-color: #7f792d;
  }
+ ${({ $bold }) => $bold && "font-weight: bold; background: #7f492d"}
 `;
 
 export const TableHeader = styled.th`
@@ -47,9 +48,9 @@ export const TableCell = styled.td<{
  $button?: boolean;
  fullWidth?: boolean;
 }>`
- border: 1px solid #ddd;
  ${({ $button }) => ($button ? "padding: 0;" : "")};
  text-align: left;
  height: 40px;
  border: none;
+ padding: 0px 10px;
 `;
