@@ -15,6 +15,30 @@ const DELETE_ADMIN_DATA_ITEM = "DELETE_ADMIN_DATA_ITEM";
 
 const fetchedData: IAdminDataItem[] = [
  {
+  name: "A",
+  price: 50,
+  specialPrice: { data: { "3": 130 }, name: "3 for 130" },
+  id: "887f1b14-8019-4ee4-11de-630f36d021b7",
+ },
+ {
+  name: "B",
+  price: 30,
+  specialPrice: { data: { "2": 45 }, name: "2 for 45" },
+  id: "887f1b14-8019-4ee4-12de-630f36d021b7",
+ },
+ {
+  name: "C",
+  price: 20,
+  specialPrice: { data: null, name: "" },
+  id: "887f1b14-8019-4ee4-13de-630f36d021b7",
+ },
+ {
+  name: "D",
+  price: 15,
+  specialPrice: { data: null, name: "" },
+  id: "887f1b14-8019-4ee4-14de-630f36d021b7",
+ },
+ {
   name: "Item 1",
   price: 100,
   specialPrice: { data: { "3": 270, "5": 430 }, name: "3 for 270, 5 for 430" },
